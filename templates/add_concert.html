@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Add Concert{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h2>Add a Concert</h2>
+    <form method="POST">
+        <label for="venue">Venue Name</label>
+        <input type="text" id="venue" name="venue" placeholder="e.g. Madison Square Garden" required />
+
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" placeholder="e.g. New York" required />
+
+        <label for="date">Concert Date</label>
+        <input type="date" id="date" name="date" required />
+
+        <label for="artist_id">Artist</label>
+        <select id="artist_id" name="artist_id" required>
+            <option value="">-- Select Artist --</option>
+            {% for a in artists %}
+            <option value="{{ a['ArtistId'] }}">{{ a['ArtistName'] }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn">Add Concert</button>
+    </form>
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+</div>
+{% endblock %}

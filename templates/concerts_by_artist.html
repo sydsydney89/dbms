@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Concerts by Artist{% endblock %}
+
+{% block content %}
+<div class="page-card">
+    <h2>Concerts by Artist</h2>
+
+    <form method="GET" class="filter-form">
+        <label for="artist_id">Select Artist</label>
+        <select id="artist_id" name="artist_id">
+            <option value="">-- Choose an Artist --</option>
+            {% for a in artists %}
+            <option value="{{ a['ArtistId'] }}" {% if a['ArtistId']|string == selected_id %}selected{% endif %}>
+                {{ a['ArtistName'] }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-sm">Search</button>
+    </form>
+
+    {% if selected_id %}
+        {% if concerts %}
+        <h3>Concerts for {{ selected_name }}</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Venue</th>
+                    <th>City</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in concerts %}
+                <tr>
+                    <td>{{ c['ConcertDate'] }}</td>
+                    <td>{{ c['VenueName'] }}</td>
+                    <td>{{ c['City'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-msg">No concerts found for {{ selected_name }}.</p>
+        {% endif %}
+    {% endif %}
+
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+</div>
+{% endblock %}

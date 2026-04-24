@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Home - Concert Ticket Manager{% endblock %}
+
+{% block content %}
+<section class="home-hero">
+    <h2>Welcome</h2>
+    <p>Use the links below to manage artists, concerts, customers, and ticket sales.</p>
+</section>
+
+<div class="card-grid">
+    <div class="card">
+        <h3>Data Entry</h3>
+        <ul>
+            <li><a href="{{ url_for('add_artist') }}">1. Add an Artist</a></li>
+            <li><a href="{{ url_for('add_concert') }}">2. Add a Concert</a></li>
+            <li><a href="{{ url_for('add_customer') }}">3. Add a Customer</a></li>
+            <li><a href="{{ url_for('add_ticket') }}">4. Purchase a Ticket</a></li>
+        </ul>
+    </div>
+    <div class="card">
+        <h3>Reports &amp; Search</h3>
+        <ul>
+            <li><a href="{{ url_for('view_concerts') }}">5. Browse Concerts by City</a></li>
+            <li><a href="{{ url_for('concerts_by_artist') }}">6. Concerts by Artist</a></li>
+            <li><a href="{{ url_for('customer_spending') }}">7. Customer Spending</a></li>
+            <li><a href="{{ url_for('top_artists') }}">8. Top 3 Artists by Revenue</a></li>
+        </ul>
+    </div>
+    <div class="card card-bonus">
+        <h3>⭐ Bonus</h3>
+        <ul>
+            <li><a href="{{ url_for('concert_revenue') }}">9. Concert Revenue Report</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Concert Revenue Report{% endblock %}
+
+{% block content %}
+<div class="page-card">
+    <h2>&#11088; Concert Revenue Report <span class="badge-bonus">BONUS</span></h2>
+    <p class="page-desc">Per-concert breakdown joining Artist, Concert, and Ticket tables.</p>
+
+    <form method="GET" class="filter-form">
+        <div>
+            <label for="genre">Filter by Genre</label>
+            <select id="genre" name="genre">
+                <option value="">-- All Genres --</option>
+                {% for g in genres %}
+                <option value="{{ g }}" {% if g == selected_genre %}selected{% endif %}>{{ g }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="sort">Sort by</label>
+            <select id="sort" name="sort">
+                <option value="date"    {% if sort == 'date'    %}selected{% endif %}>Date</option>
+                <option value="revenue" {% if sort == 'revenue' %}selected{% endif %}>Revenue</option>
+                <option value="tickets" {% if sort == 'tickets' %}selected{% endif %}>Tickets Sold</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-sm">Apply</button>
+        {% if selected_genre %}
+        <a href="{{ url_for('concert_revenue') }}" class="btn btn-sm btn-outline">Clear</a>
+        {% endif %}
+    </form>
+
+    {% if results %}
+    <div class="summary-bar">
+        <span>Showing <strong>{{ results|length }}</strong> concert(s)</span>
+        <span>Total Tickets Sold: <strong>{{ total_tickets }}</strong></span>
+        <span>Total Revenue: <strong>${{ "%.2f"|format(total_revenue) }}</strong></span>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Artist</th>
+                <th>Genre</th>
+                <th>Venue</th>
+                <th>City</th>
+                <th>Tickets Sold</th>
+                <th>Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in results %}
+            <tr>
+                <td>{{ r['ConcertDate'] }}</td>
+                <td>{{ r['ArtistName'] }}</td>
+                <td><span class="genre-tag">{{ r['Genre'] }}</span></td>
+                <td>{{ r['VenueName'] }}</td>
+                <td>{{ r['City'] }}</td>
+                <td>{{ r['TicketsSold'] }}</td>
+                <td>${{ "%.2f"|format(r['TotalRevenue']) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="totals-row">
+                <td colspan="5"><strong>Totals</strong></td>
+                <td><strong>{{ total_tickets }}</strong></td>
+                <td><strong>${{ "%.2f"|format(total_revenue) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+    {% else %}
+    <p class="empty-msg">No concerts found{% if selected_genre %} for genre "{{ selected_genre }}"{% endif %}.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Add Customer{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h2>Add a Customer</h2>
+    <form method="POST">
+        <label for="name">Customer Name</label>
+        <input type="text" id="name" name="name" placeholder="e.g. Jane Doe" required />
+
+        <button type="submit" class="btn">Add Customer</button>
+    </form>
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+</div>
+{% endblock %}

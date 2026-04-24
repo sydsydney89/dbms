@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Customer Spending{% endblock %}
+
+{% block content %}
+<div class="page-card">
+    <h2>Customer Spending</h2>
+
+    <form method="GET" class="filter-form">
+        <label for="customer_id">Filter by Customer</label>
+        <select id="customer_id" name="customer_id">
+            <option value="">-- All Customers --</option>
+            {% for cu in customers %}
+            <option value="{{ cu['CustomerId'] }}" {% if cu['CustomerId']|string == selected_id %}selected{% endif %}>
+                {{ cu['CustomerName'] }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-sm">Filter</button>
+        {% if selected_id %}
+        <a href="{{ url_for('customer_spending') }}" class="btn btn-sm btn-outline">Clear</a>
+        {% endif %}
+    </form>
+
+    {% if results %}
+    <table>
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>Name</th>
+                <th>Total Spent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in results %}
+            <tr>
+                <td>{{ r['CustomerId'] }}</td>
+                <td>{{ r['CustomerName'] }}</td>
+                <td>${{ "%.2f"|format(r['TotalSpent']) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-msg">No spending data found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+</div>
+{% endblock %}

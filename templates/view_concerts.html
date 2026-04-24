@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Browse Concerts{% endblock %}
+
+{% block content %}
+<div class="page-card">
+    <h2>Browse Concerts</h2>
+
+    <form method="GET" class="filter-form">
+        <label for="city">Filter by City</label>
+        <select id="city" name="city">
+            <option value="">-- All Cities --</option>
+            {% for city in cities %}
+            <option value="{{ city }}" {% if city == selected_city %}selected{% endif %}>{{ city }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-sm">Filter</button>
+        {% if selected_city %}
+        <a href="{{ url_for('view_concerts') }}" class="btn btn-sm btn-outline">Clear</a>
+        {% endif %}
+    </form>
+
+    {% if concerts %}
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Artist</th>
+                <th>Venue</th>
+                <th>City</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in concerts %}
+            <tr>
+                <td>{{ c['ConcertDate'] }}</td>
+                <td>{{ c['ArtistName'] }}</td>
+                <td>{{ c['VenueName'] }}</td>
+                <td>{{ c['City'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-msg">No concerts found{% if selected_city %} in {{ selected_city }}{% endif %}.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+</div>
+{% endblock %}

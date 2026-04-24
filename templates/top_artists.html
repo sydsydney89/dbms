@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Top 3 Artists by Revenue{% endblock %}
+
+{% block content %}
+<div class="page-card">
+    <h2>Top 3 Artists by Total Ticket Revenue</h2>
+
+    {% if results %}
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Artist</th>
+                <th>Total Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in results %}
+            <tr class="{% if loop.index == 1 %}rank-gold{% elif loop.index == 2 %}rank-silver{% elif loop.index == 3 %}rank-bronze{% endif %}">
+                <td>{{ loop.index }}</td>
+                <td>{{ r['ArtistName'] }}</td>
+                <td>${{ "%.2f"|format(r['TotalRevenue']) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-msg">No revenue data available.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+</div>
+{% endblock %}
